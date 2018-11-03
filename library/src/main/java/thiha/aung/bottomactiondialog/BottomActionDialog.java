@@ -2,8 +2,6 @@ package thiha.aung.bottomactiondialog;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.NonNull;
@@ -19,10 +17,22 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
 
     private static final int CANCEL_BUTTON_ID = 100;
 
+    Drawable background;
+    Drawable cancelButtonBackground;
+    Drawable otherButtonTopBackground;
+    Drawable otherButtonMiddleBackground;
+    Drawable otherButtonBottomBackground;
+    Drawable otherButtonSingleBackground;
+    int cancelButtonTextColor;
+    int otherButtonTextColor;
+    int padding;
+    int otherButtonSpacing;
+    int cancelButtonMarginTop;
+    float bottomActionDialogTextSize;
+
     String mCancelButtonTitle;
     private String[] mOtherButtonTitles;
     OnOtherButtonClickedListener mOnOtherButtonClickedListener;
-    private Attributes mAttrs;
 
     public BottomActionDialog(@NonNull Context context) {
         super(context);
@@ -55,7 +65,7 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
     public void createView() {
         Context context = getContext();
 
-        mAttrs = readAttribute(context);
+        readAttribute(context);
 
         LinearLayout panel = new LinearLayout(context);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
@@ -71,11 +81,11 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
                 bt.setOnClickListener(this);
                 bt.setBackground(getOtherButtonBg(mOtherButtonTitles, i));
                 bt.setText(mOtherButtonTitles[i]);
-                bt.setTextColor(mAttrs.otherButtonTextColor);
-                bt.setTextSize(TypedValue.COMPLEX_UNIT_PX, mAttrs.bottomActionDialogTextSize);
+                bt.setTextColor(this.otherButtonTextColor);
+                bt.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.bottomActionDialogTextSize);
                 if (i > 0) {
                     LinearLayout.LayoutParams otherbuttonParams = createButtonLayoutParams();
-                    otherbuttonParams.topMargin = mAttrs.otherButtonSpacing;
+                    otherbuttonParams.topMargin = this.otherButtonSpacing;
                     panel.addView(bt, otherbuttonParams);
                 } else {
                     panel.addView(bt);
@@ -84,97 +94,95 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
         }
         Button bt = new Button(context);
         bt.getPaint().setFakeBoldText(true);
-        bt.setTextSize(TypedValue.COMPLEX_UNIT_PX, mAttrs.bottomActionDialogTextSize);
+        bt.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.bottomActionDialogTextSize);
         bt.setId(CANCEL_BUTTON_ID);
-        bt.setBackground(mAttrs.cancelButtonBackground);
+        bt.setBackground(this.cancelButtonBackground);
         bt.setText(mCancelButtonTitle);
-        bt.setTextColor(mAttrs.cancelButtonTextColor);
+        bt.setTextColor(this.cancelButtonTextColor);
         bt.setOnClickListener(this);
         LinearLayout.LayoutParams canelButtonParams = createButtonLayoutParams();
-        canelButtonParams.topMargin = mAttrs.cancelButtonMarginTop;
+        canelButtonParams.topMargin = this.cancelButtonMarginTop;
         panel.addView(bt, canelButtonParams);
 
-        panel.setBackground(mAttrs.background);
-        panel.setPadding(mAttrs.padding, mAttrs.padding, mAttrs.padding,
-                mAttrs.padding);
+        panel.setBackground(this.background);
+        panel.setPadding(this.padding, this.padding, this.padding,
+                this.padding);
 
         setContentView(panel);
     }
 
-    private Attributes readAttribute(Context context) {
-        Attributes attrs = new Attributes(context);
+    private void readAttribute(Context context) {
         TypedArray a = context.getTheme().obtainStyledAttributes(null,
-                R.styleable.BottomActionDialog, R.attr.bottomActionDialogStyle, 0);
+                R.styleable.BottomActionDialog, R.attr.bottomActionDialogStyle, R.style.BottomActionDialogStyle);
         Drawable background = a
                 .getDrawable(R.styleable.BottomActionDialog_bottomActionDialogBackground);
         if (background != null) {
-            attrs.background = background;
+            this.background = background;
         }
         Drawable cancelButtonBackground = a
                 .getDrawable(R.styleable.BottomActionDialog_cancelButtonBackground);
         if (cancelButtonBackground != null) {
-            attrs.cancelButtonBackground = cancelButtonBackground;
+            this.cancelButtonBackground = cancelButtonBackground;
         }
         Drawable otherButtonTopBackground = a
                 .getDrawable(R.styleable.BottomActionDialog_otherButtonTopBackground);
         if (otherButtonTopBackground != null) {
-            attrs.otherButtonTopBackground = otherButtonTopBackground;
+            this.otherButtonTopBackground = otherButtonTopBackground;
         }
         Drawable otherButtonMiddleBackground = a
                 .getDrawable(R.styleable.BottomActionDialog_otherButtonMiddleBackground);
         if (otherButtonMiddleBackground != null) {
-            attrs.otherButtonMiddleBackground = otherButtonMiddleBackground;
+            this.otherButtonMiddleBackground = otherButtonMiddleBackground;
         }
         Drawable otherButtonBottomBackground = a
                 .getDrawable(R.styleable.BottomActionDialog_otherButtonBottomBackground);
         if (otherButtonBottomBackground != null) {
-            attrs.otherButtonBottomBackground = otherButtonBottomBackground;
+            this.otherButtonBottomBackground = otherButtonBottomBackground;
         }
         Drawable otherButtonSingleBackground = a
                 .getDrawable(R.styleable.BottomActionDialog_otherButtonSingleBackground);
         if (otherButtonSingleBackground != null) {
-            attrs.otherButtonSingleBackground = otherButtonSingleBackground;
+            this.otherButtonSingleBackground = otherButtonSingleBackground;
         }
-        attrs.cancelButtonTextColor = a.getColor(
+        this.cancelButtonTextColor = a.getColor(
                 R.styleable.BottomActionDialog_cancelButtonTextColor,
-                attrs.cancelButtonTextColor);
-        attrs.otherButtonTextColor = a.getColor(
+                this.cancelButtonTextColor);
+        this.otherButtonTextColor = a.getColor(
                 R.styleable.BottomActionDialog_otherButtonTextColor,
-                attrs.otherButtonTextColor);
-        attrs.padding = (int) a.getDimension(
-                R.styleable.BottomActionDialog_bottomActionDialogPadding, attrs.padding);
-        attrs.otherButtonSpacing = (int) a.getDimension(
+                this.otherButtonTextColor);
+        this.padding = (int) a.getDimension(
+                R.styleable.BottomActionDialog_bottomActionDialogPadding, this.padding);
+        this.otherButtonSpacing = (int) a.getDimension(
                 R.styleable.BottomActionDialog_otherButtonSpacing,
-                attrs.otherButtonSpacing);
-        attrs.cancelButtonMarginTop = (int) a.getDimension(
+                this.otherButtonSpacing);
+        this.cancelButtonMarginTop = (int) a.getDimension(
                 R.styleable.BottomActionDialog_cancelButtonMarginTop,
-                attrs.cancelButtonMarginTop);
-        attrs.bottomActionDialogTextSize = a.getDimensionPixelSize(R.styleable.BottomActionDialog_bottomActionDialogTextSize, (int) attrs.bottomActionDialogTextSize);
+                this.cancelButtonMarginTop);
+        this.bottomActionDialogTextSize = a.getDimensionPixelSize(R.styleable.BottomActionDialog_bottomActionDialogTextSize, (int) this.bottomActionDialogTextSize);
 
         a.recycle();
-        return attrs;
     }
 
     private Drawable getOtherButtonBg(String[] titles, int i) {
         if (titles.length == 1) {
-            return mAttrs.otherButtonSingleBackground;
+            return this.otherButtonSingleBackground;
         }
         if (titles.length == 2) {
             switch (i) {
                 case 0:
-                    return mAttrs.otherButtonTopBackground;
+                    return this.otherButtonTopBackground;
                 case 1:
-                    return mAttrs.otherButtonBottomBackground;
+                    return this.otherButtonBottomBackground;
             }
         }
         if (titles.length > 2) {
             if (i == 0) {
-                return mAttrs.otherButtonTopBackground;
+                return this.otherButtonTopBackground;
             }
             if (i == (titles.length - 1)) {
-                return mAttrs.otherButtonBottomBackground;
+                return this.otherButtonBottomBackground;
             }
-            return mAttrs.getOtherButtonMiddleBackground();
+            return this.getOtherButtonMiddleBackground();
         }
         return null;
     }
@@ -194,54 +202,15 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
         }
     }
 
-    private static class Attributes {
-        private Context mContext;
-
-        public Attributes(Context context) {
-            mContext = context;
-            this.background = new ColorDrawable(Color.TRANSPARENT);
-            this.cancelButtonBackground = new ColorDrawable(Color.BLACK);
-            ColorDrawable gray = new ColorDrawable(Color.GRAY);
-            this.otherButtonTopBackground = gray;
-            this.otherButtonMiddleBackground = gray;
-            this.otherButtonBottomBackground = gray;
-            this.otherButtonSingleBackground = gray;
-            this.cancelButtonTextColor = Color.WHITE;
-            this.otherButtonTextColor = Color.BLACK;
-            this.padding = dp2px(20);
-            this.otherButtonSpacing = dp2px(2);
-            this.cancelButtonMarginTop = dp2px(10);
-            this.bottomActionDialogTextSize = dp2px(16);
+    public Drawable getOtherButtonMiddleBackground() {
+        if (otherButtonMiddleBackground instanceof StateListDrawable) {
+            TypedArray a = getContext().getTheme().obtainStyledAttributes(null,
+                    R.styleable.BottomActionDialog, R.attr.bottomActionDialogStyle, R.style.BottomActionDialogStyle);
+            otherButtonMiddleBackground = a
+                    .getDrawable(R.styleable.BottomActionDialog_otherButtonMiddleBackground);
+            a.recycle();
         }
-
-        private int dp2px(int dp) {
-            return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    dp, mContext.getResources().getDisplayMetrics());
-        }
-
-        public Drawable getOtherButtonMiddleBackground() {
-            if (otherButtonMiddleBackground instanceof StateListDrawable) {
-                TypedArray a = mContext.getTheme().obtainStyledAttributes(null,
-                        R.styleable.BottomActionDialog, R.attr.bottomActionDialogStyle, 0);
-                otherButtonMiddleBackground = a
-                        .getDrawable(R.styleable.BottomActionDialog_otherButtonMiddleBackground);
-                a.recycle();
-            }
-            return otherButtonMiddleBackground;
-        }
-
-        Drawable background;
-        Drawable cancelButtonBackground;
-        Drawable otherButtonTopBackground;
-        Drawable otherButtonMiddleBackground;
-        Drawable otherButtonBottomBackground;
-        Drawable otherButtonSingleBackground;
-        int cancelButtonTextColor;
-        int otherButtonTextColor;
-        int padding;
-        int otherButtonSpacing;
-        int cancelButtonMarginTop;
-        float bottomActionDialogTextSize;
+        return otherButtonMiddleBackground;
     }
 
     public static class Builder {

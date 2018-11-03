@@ -6,6 +6,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="bottomActionDialogStyle">@style/DemoBottomActionDialogStyle</item>
+    </style>
+
+    <style name="DemoBottomActionDialogStyle" parent="BottomActionDialogStyle">
+        <item name="cancelButtonTextColor">@android:color/holo_red_light</item>
+        <item name="otherButtonTextColor">@color/colorPrimary</item>
     </style>
 
 </resources>

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="BottomActionDialogs">
-        <attr name="bottomActionDialogStyle" format="reference" />
-    </declare-styleable>
     <declare-styleable name="BottomActionDialog">
+        <attr name="bottomActionDialogStyle" format="reference" />
         <attr name="bottomActionDialogBackground" format="color|reference" />
         <attr name="cancelButtonBackground" format="color|reference" />
         <attr name="otherButtonTopBackground" format="color|reference" />
