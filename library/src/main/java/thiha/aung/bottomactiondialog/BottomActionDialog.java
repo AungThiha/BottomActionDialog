@@ -1,14 +1,18 @@
 package thiha.aung.bottomactiondialog;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.BottomSheetDialog;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,9 +23,9 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
 
     private static final int CANCEL_BUTTON_ID = 100;
 
-    String mCancelButtonTitle;
-    private String[] mOtherButtonTitles;
-    OnOtherButtonClickedListener mOnOtherButtonClickedListener;
+    private CharSequence mCancelButtonTitle;
+    private CharSequence[] mOtherButtonTitles;
+    private OnOtherButtonClickedListener mListener;
 
     public BottomActionDialog(@NonNull Context context) {
         super(context);
@@ -35,23 +39,23 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
         super(context, cancelable, cancelListener);
     }
 
-    private void setCancelButtonTitle(String title) {
+    private void setCancelButtonTitle(CharSequence title) {
         mCancelButtonTitle = title;
     }
 
-    public void setCancelButtonTitle(int strId) {
+    private void setCancelButtonTitle(int strId) {
         setCancelButtonTitle(getContext().getString(strId));
     }
 
-    private void setOtherButtonTitles(String... titles) {
+    private void setOtherButtonTitles(CharSequence... titles) {
         mOtherButtonTitles = titles;
     }
 
-    public void setOnOtherButtonClickedListener(OnOtherButtonClickedListener onOtherButtonClickedListener) {
-        this.mOnOtherButtonClickedListener = onOtherButtonClickedListener;
+    private void setOnOtherButtonClickedListener(OnOtherButtonClickedListener listener) {
+        this.mListener = listener;
     }
 
-    public void createView() {
+    private void createView() {
         Context context = getContext();
 
         Attributes attrs = readAttribute(context);
@@ -154,7 +158,7 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
         return attrs;
     }
 
-    private Drawable getOtherButtonBg(Attributes attrs, String[] titles, int i) {
+    private Drawable getOtherButtonBg(Attributes attrs, CharSequence[] titles, int i) {
         if (titles.length == 1) {
             return attrs.otherButtonSingleBackground;
         }
@@ -187,8 +191,8 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
     @Override
     public void onClick(final View v) {
         dismiss();
-        if (v.getId() != CANCEL_BUTTON_ID && mOnOtherButtonClickedListener != null) {
-            mOnOtherButtonClickedListener.onClick(this, v.getId() - CANCEL_BUTTON_ID
+        if (v.getId() != CANCEL_BUTTON_ID && mListener != null) {
+            mListener.onClick(this, v.getId() - CANCEL_BUTTON_ID
                     - 1);
         }
     }
@@ -246,39 +250,101 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
     public static class Builder {
 
         private Context mContext;
-        private String mCancelButtonTitle;
-        private String[] mOtherButtonTitles;
+        private CharSequence mCancelButtonTitle;
+        private CharSequence[] mOtherButtonTitles;
         private boolean mCancelable;
-        private OnOtherButtonClickedListener mOnOtherButtonClickedListener;
+        private OnOtherButtonClickedListener mListener;
 
+        /**
+         * Creates a builder for an Bottom Action Dialog
+         *
+         *
+         * @param context the parent context
+         */
         public Builder(Context context) {
             mContext = context;
         }
 
+        /**
+         * Sets whether this dialog is cancelable with the
+         * {@link KeyEvent#KEYCODE_BACK BACK} key or
+         * with a touch outside the window's bounds
+         *
+         * @param cancelable Whether the dialog should be canceled when touched outside
+         *        the window or the {@link KeyEvent#KEYCODE_BACK BACK} key is clicked
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
         public Builder setCancelable(final boolean cancelable) {
             mCancelable = cancelable;
             return this;
         }
 
-        public Builder setCancelButtonTitle(String title) {
+        /**
+         * Sets the tile of the cancel button
+         *
+         * @param title the title of the cancel button
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCancelButtonTitle(CharSequence title) {
             mCancelButtonTitle = title;
             return this;
         }
 
-        public Builder setCancelButtonTitle(int strId) {
-            return setCancelButtonTitle(mContext.getString(strId));
+        /**
+         * Sets the tile of the cancel button using the given resource id.
+         *
+         * @param titleId Whether the title of the cancel button
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setCancelButtonTitle(@StringRes int titleId) {
+            return setCancelButtonTitle(mContext.getString(titleId));
         }
 
-        public Builder setOtherButtonTitles(String... titles) {
+        /**
+         * Set a list of buttons to be displayed in the dialog as the content, you will be notified of
+         * the clicked button via the supplied listener. This should be an array type i.e.
+         * R.array.foo Clicking on a button in the list will dismiss the dialog
+         *
+         * @param titlesId the resource id of an array i.e. R.array.foo
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOtherButtonTitles(@ArrayRes int titlesId) {
+            mOtherButtonTitles = mContext.getResources().getTextArray(titlesId);
+            return this;
+        }
+
+
+        /**
+         * Set a list of buttons to be displayed in the dialog as the content, you will be notified of
+         * the clicked button via the supplied listener.
+         *
+         * @param titles Arguments for the titles of buttons
+         * @return This Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOtherButtonTitles(CharSequence... titles) {
             mOtherButtonTitles = titles;
             return this;
         }
 
-        public Builder setOnOtherButtonClickedListener(OnOtherButtonClickedListener onOtherButtonClickedListener) {
-            this.mOnOtherButtonClickedListener = onOtherButtonClickedListener;
+        /**
+         * Sets a listener to be invoked when a button in the list is selected.
+         *
+         * @param listener the listener to be invoked
+         * @return this Builder object to allow for chaining of calls to set methods
+         */
+        public Builder setOnOtherButtonClickedListener(OnOtherButtonClickedListener listener) {
+            this.mListener = listener;
             return this;
         }
 
+        /**
+         * Creates an {@link BottomActionDialog} with the arguments supplied to this
+         * builder.
+         * <p>
+         * Calling this method does not display the dialog. If no additional
+         * processing is needed, {@link #show()} may be called instead to both
+         * create and display the dialog.
+         */
         public BottomActionDialog create() {
             BottomActionDialog dialog = new BottomActionDialog(this.mContext, R.style.TransparentBottomSheetDialogTheme);
             if (this.mCancelable) {
@@ -286,11 +352,22 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
             }
             dialog.setCancelButtonTitle(this.mCancelButtonTitle);
             dialog.setOtherButtonTitles(this.mOtherButtonTitles);
-            dialog.setOnOtherButtonClickedListener(this.mOnOtherButtonClickedListener);
+            dialog.setOnOtherButtonClickedListener(this.mListener);
             dialog.createView();
             return dialog;
         }
 
+
+        /**
+         * Creates an {@link BottomActionDialog} with the arguments supplied to this
+         * builder and immediately displays the dialog.
+         * <p>
+         * Calling this method is functionally identical to:
+         * <pre>
+         *     BottomActionDialog dialog = builder.create();
+         *     dialog.show();
+         * </pre>
+         */
         public BottomActionDialog show() {
             BottomActionDialog dialog = this.create();
             dialog.show();
@@ -299,9 +376,19 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
 
     }
 
+    /**
+     * Interface definition for a callback to be invoked when
+     * a button in this view has been clicked.
+     */
     public interface OnOtherButtonClickedListener {
-
-        void onClick(BottomActionDialog bottomActionDialog, int which);
+        /**
+         * <p>Callback method to be invoked when a button in this dialog has been
+         * clicked.
+         *
+         * @param dialog the dialog that contains the button that received the click
+         * @param position The position of the button in the dialog
+         */
+        void onClick(DialogInterface dialog, int position);
 
     }
 

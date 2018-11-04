@@ -1,5 +1,6 @@
 package thiha.aung.bottomactiondialog;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
                 .setOtherButtonTitles("Say thank you", "Say welcome", "Say love you")
                 .setOnOtherButtonClickedListener(new BottomActionDialog.OnOtherButtonClickedListener() {
                     @Override
-                    public void onClick(BottomActionDialog bottomActionDialog, int which) {
+                    public void onClick(DialogInterface dialog, int position) {
                         String message;
-                        switch (which){
+                        switch (position){
                             case 0: message = "Thank you";
                                 break;
                             case 1: message = "Welcome";
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                             default:
                                 throw new RuntimeException("Do not add more titles than the onclick listener handle");
                         }
-                        Toast.makeText(bottomActionDialog.getContext(), message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setCancelable(true)
