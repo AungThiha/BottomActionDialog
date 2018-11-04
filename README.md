@@ -1,7 +1,6 @@
 # BottomActionDialog
-[ ![Download](https://api.bintray.com/packages/aungthiha/maven/BottomActionDialog/images/download.svg)](https://bintray.com/aungthiha/maven/BottomActionDialog/_latestVersion)
 
-BottomSheetDialog with iOS UIActionSheet design. Inspiration taken from ![ActionSheet](https://github.com/baoyongzhang/android-ActionSheet). The difference is when the ActionSheet is invoked from a FragmentDialog, it's shown beneath the FragmentDialog and won't be visible to users. This library solves that problem by using BottomSheetDialog from support design library.
+BottomSheetDialog with iOS UIActionSheet design. Inspiration taken from [ActionSheet](https://github.com/baoyongzhang/android-ActionSheet). The difference is when the ActionSheet is invoked from a FragmentDialog, it's shown beneath the FragmentDialog and won't be visible to users. This library solves that problem by using BottomSheetDialog from support design library.
 
 <img src="https://raw.githubusercontent.com/aungthiha/BottomActionDialog/master/demo.gif" width="320" alt="Demo Gif"/>
 
