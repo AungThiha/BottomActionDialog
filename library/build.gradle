@@ -1,15 +1,41 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+
+    bintrayRepo = 'maven'
+    bintrayName = 'bottomactiondialog'
+
+    publishedGroupId = 'thiha.aung.bottomactiondialog'
+    libraryName = 'BottomActionDialog'
+    artifact = 'bottomactiondialog'
+
+    libraryDescription = 'BottomSheetDialog with iOS UIActionSheet design'
+
+    siteUrl = 'https://github.com/AungThiha/BottomActionDialog'
+    gitUrl = 'https://github.com/AungThiha/BottomActionDialog.git'
+
+    libraryVersion = '1.0.0'
+
+    developerId = 'aungthiha'
+    developerName = 'Aung Thiha'
+    developerEmail = 'mr.aungthiha@gmail.com'
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+
+}
 
 android {
+
     compileSdkVersion 28
-
-
 
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName libraryVersion
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -27,4 +53,85 @@ android {
 dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
+}
+
+group = publishedGroupId
+version = libraryVersion
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            packaging 'aar'
+            groupId publishedGroupId
+            artifactId artifact
+
+            name libraryName
+            description libraryDescription
+            url siteUrl
+
+            licenses {
+                license {
+                    name licenseName
+                    url licenseUrl
+                }
+            }
+            developers {
+                developer {
+                    id developerId
+                    name developerName
+                    email developerEmail
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        dryRun = false
+        publish = true
+        override = false
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+        }
+    }
 }
