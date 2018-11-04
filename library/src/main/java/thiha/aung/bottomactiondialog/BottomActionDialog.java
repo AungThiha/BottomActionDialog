@@ -344,6 +344,8 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
          * Calling this method does not display the dialog. If no additional
          * processing is needed, {@link #show()} may be called instead to both
          * create and display the dialog.
+         *
+         * @return created BottomActionDialog
          */
         public BottomActionDialog create() {
             BottomActionDialog dialog = new BottomActionDialog(this.mContext, R.style.TransparentBottomSheetDialogTheme);
@@ -367,6 +369,8 @@ public class BottomActionDialog extends BottomSheetDialog implements View.OnClic
          *     BottomActionDialog dialog = builder.create();
          *     dialog.show();
          * </pre>
+         *
+         * @return shown BottomActionDialog
          */
         public BottomActionDialog show() {
             BottomActionDialog dialog = this.create();
