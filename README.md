@@ -24,15 +24,15 @@ dependencies {
 
 ```java
 new BottomActionDialog.Builder(this)
-        .setCancelButtonTitle("Cancel")
-        .setOtherButtonTitles("Item1", "Item2", "Item3", "Item4")
-        .setOnOtherButtonClickedListener(new BottomActionDialog.OnOtherButtonClickedListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int position) {
-            }
-        })
-        .setCancelable(true)
-        .show();
+    .setCancelButtonTitle("Cancel")
+    .setOtherButtonTitles("Item1", "Item2", "Item3", "Item4")
+    .setOnOtherButtonClickedListener(new BottomActionDialog.OnOtherButtonClickedListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int position) {
+        }
+    })
+    .setCancelable(true)
+    .show();
 ```
 
 ### Methods
@@ -49,21 +49,20 @@ implementing `OnOtherButtonClickedListener` interface.
 * `onClick()` Click item event，`dialog` is the DialogInterface and `position` is item index.
 
 ```java
-
-	@Override
-    public void onClick(DialogInterface dialog, int position) {
-    	Toast.makeText(getApplicationContext(), "click item index = " + position,
-				0).show();
-    }
+@Override
+public void onClick(DialogInterface dialog, int position) {
+    Toast.makeText(getApplicationContext(), "click item index = " + position,
+            0).show();
+}
 ```
 
 ### Style
 
 ```xml
 <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="bottomActionDialogStyle">@style/DemoBottomActionDialogStyle</item>
-    </style>
+<style name="AppTheme" parent="AppBaseTheme">
+    <item name="bottomActionDialogStyle">@style/DemoBottomActionDialogStyle</item>
+</style>
 ```
 
 ```xml
