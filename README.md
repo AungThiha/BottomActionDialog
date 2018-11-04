@@ -10,7 +10,7 @@ BottomSheetDialog with iOS UIActionSheet design. Inspiration taken from [ActionS
 
 ```groovy
 dependencies {
-    compile 'thiha.aung.bottomactiondialog:bottomactiondialog:1.0.1'
+    implementation 'thiha.aung.bottomactiondialog:bottomactiondialog:1.0.1'
 }
 ```
 
