@@ -67,21 +67,20 @@ implementing `OnOtherButtonClickedListener` interface.
 ```
 
 ```xml
- <!-- iOS7 Style -->
  <style name="DemoBottomActionDialogStyle" parent="BottomActionDialogStyle">
-        <item name="bottomActionDialogBackground">@android:color/transparent</item>
-        <item name="cancelButtonBackground">@drawable/slt_as_ios7_cancel_bt</item>
-        <item name="otherButtonTopBackground">@drawable/slt_as_ios7_other_bt_top</item>
-        <item name="otherButtonMiddleBackground">@drawable/slt_as_ios7_other_bt_middle</item>
-        <item name="otherButtonBottomBackground">@drawable/slt_as_ios7_other_bt_bottom</item>
-        <item name="otherButtonSingleBackground">@drawable/slt_as_ios7_other_bt_single</item>
-        <item name="cancelButtonTextColor">#1E82FF</item>
-        <item name="otherButtonTextColor">#1E82FF</item>
-        <item name="bottomActionDialogPadding">10dp</item>
-        <item name="otherButtonSpacing">0dp</item>
-        <item name="cancelButtonMarginTop">10dp</item>
-        <item name="bottomActionDialogTextSize">16sp</item>
-    </style>
+    <item name="bottomActionDialogBackground">@android:color/transparent</item>
+    <item name="cancelButtonBackground">@drawable/slt_as_ios7_cancel_bt</item>
+    <item name="otherButtonTopBackground">@drawable/slt_as_ios7_other_bt_top</item>
+    <item name="otherButtonMiddleBackground">@drawable/slt_as_ios7_other_bt_middle</item>
+    <item name="otherButtonBottomBackground">@drawable/slt_as_ios7_other_bt_bottom</item>
+    <item name="otherButtonSingleBackground">@drawable/slt_as_ios7_other_bt_single</item>
+    <item name="cancelButtonTextColor">#1E82FF</item>
+    <item name="otherButtonTextColor">#1E82FF</item>
+    <item name="bottomActionDialogPadding">10dp</item>
+    <item name="otherButtonSpacing">0dp</item>
+    <item name="cancelButtonMarginTop">10dp</item>
+    <item name="bottomActionDialogTextSize">16sp</item>
+</style>
 ```
 
 ### Style attributes
