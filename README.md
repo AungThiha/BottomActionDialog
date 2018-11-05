@@ -9,12 +9,6 @@ BottomSheetDialog with iOS UIActionSheet design. Inspiration taken from [ActionS
 ### Add dependency
 
 ```groovy
-repositories {
-    maven {
-        url 'https://dl.bintray.com/aungthiha/maven'
-    }
-}
-
 dependencies {
     implementation 'thiha.aung.bottomactiondialog:bottomactiondialog:1.0.1'
 }
